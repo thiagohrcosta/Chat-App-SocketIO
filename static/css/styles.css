@@ -1,0 +1,44 @@
+body {
+  font-family: Poppins;
+  background-color: #F2EDEB;
+}
+
+.logo {
+  max-width: 1028px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.logo img {
+  width: 300px;
+  height: 150px;
+}
+
+.header-container {
+  max-width: 1028px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.header-container h1, p {
+  text-align: center;
+}
+
+.header-container form, button {
+  margin: 0 auto;
+  width: 300px;
+  height: 45px;
+  border-radius: 20px;
+  background-color: #1E96FC;
+  border: none;
+  color: #F2EDEB;
+  cursor: pointer;
+}
+
+.header-container form, button:hover {
+  background-color: #192A51;
+}

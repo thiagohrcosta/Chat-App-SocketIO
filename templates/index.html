@@ -4,30 +4,25 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css' )}}" />
+
     <title>Real Time Chat</title>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/logo.png' )}}" alt="Logo" />
+    </div>
+    <div class="header-container">
+      <h1>DIRECT MESSAGE</h1>
+      <p>Join real time conversations and find new friends</p>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
-    <script>
-      var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-      socket.on('message', function(msg) {
-        var ul = document.getElementById('messages');
-        var li = document.createElement('li');
-        li.appendChild(document.createTextNode(msg));
-        ul.appendChild(li);
-      });
-
-      document.getElementById('form').onsubmit = function() {
-        socket.emit('message', document.getElementById('input').value);
-        document.getElementById('input').value = '';
-        return false;
-      };
-    </script>
+      <form id="form" action="">
+        <button>Create new chat room</button>
+      </form>
+    </div>
   </body>
 </html>
