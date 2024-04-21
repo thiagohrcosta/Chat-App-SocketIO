@@ -20,27 +20,68 @@
       <h1>DIRECT MESSAGE</h1>
       <p>Join real time conversations and find new friends</p>
     </div> 
-    <ul id="messages"></ul>
-    <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Send</button>
+    <ul id="messages">
+      {% for message in messages %}
+        <li>{{message.message}}</li>
+      {% endfor %}
+    </ul>
+    <form id="form">
+      <input id="input" name="input" autocomplete="off" />
+      <button>Send</button>
     </form>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
     <script>
       var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-      socket.on('message', function(msg) {
-        var ul = document.getElementById('messages');
-        var li = document.createElement('li');
-        li.appendChild(document.createTextNode(msg));
-        ul.appendChild(li);
+      socket.on('connect', function() {
+        console.log('Connected to Socket.IO server');
       });
 
-      document.getElementById('form').onsubmit = function() {
-        socket.emit('message', document.getElementById('input').value);
+      // Function to handle form submission
+      function handleSubmit(e) {
+        e.preventDefault();
+    
+        var message = document.getElementById('input').value;
+    
+        socket.emit('message', message);
+    
+        var roomName = '{{ room_name }}';
+        var url = '/message/' + roomName;
+        var formData = new FormData();
+        formData.append('input', message);
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            console.log('Message sent successfully');
+          } else {
+            console.error('Failed to send message');
+          }
+        };
+        xhr.onerror = function () {
+          console.error('Error while sending message');
+        };
+        xhr.send(formData);
+    
         document.getElementById('input').value = '';
-        return false;
-      };
+      }
+    
+      // Attach the handleSubmit function to the form submission event
+      document.getElementById('form').onsubmit = handleSubmit;
+    
+      // Socket.IO event listener for receiving messages
+      socket.on('message', function(message) {
+        var ul = document.getElementById('messages');
+        var li = document.createElement('li');
+        li.textContent = message;
+        ul.appendChild(li);
+    
+        // Ensure the last message is always visible
+      });
+      
     </script>
+    
+
   </body>
 </html>
