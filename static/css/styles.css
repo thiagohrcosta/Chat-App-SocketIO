@@ -42,3 +42,25 @@ body {
 .header-container form, button:hover {
   background-color: #192A51;
 }
+
+.rooms-container {
+  max-width: 1028px;
+  margin: 50px auto;
+}
+
+.room-card-item {
+  margin: 20px 0;
+  background-color: #FC5130;
+  border-radius: 10px;
+  height: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #F2EDEB;
+}
+
+.room-card p {
+  text-align: left;
+  max-width: 1028px;
+  margin: 0 auto;
+}

@@ -20,9 +20,19 @@
       <h1>DIRECT MESSAGE</h1>
       <p>Join real time conversations and find new friends</p>
 
-      <form id="form" action="">
+      <form id="form" action="/" method="POST">
         <button>Create new chat room</button>
       </form>
+    </div>
+    <div class="rooms-container">
+      <h3>Chat Rooms avaialable</h3>
+      <div class="room-card">
+        {% for room in rooms %}
+          <div class="room-card-item">
+            <p>{{ room.name }}</p>
+          </div>
+        {% endfor %}
+      </div>
     </div>
   </body>
 </html>
