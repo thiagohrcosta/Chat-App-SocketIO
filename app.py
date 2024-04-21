@@ -3,7 +3,7 @@ from repository.database import db
 from flask_socketio import SocketIO
 from faker import Faker
 
-from db_models import Room
+from db_models.room import Room
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -31,12 +31,11 @@ def create():
 
   return redirect(url_for('room', room_name=room_name))
 
+
 @app.route('/room/<room_name>')
 def room(room_name):
-   return render_template(
-    'room.html', 
-    room_name=room_name
-  )
+  messages = []  
+  return render_template('room.html', room_name=room_name, messages=messages)
 
 @app.route("/<int:message_id>", methods=['GET'])
 def message():
