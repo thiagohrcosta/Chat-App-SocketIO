@@ -56,11 +56,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #F2EDEB;
+  padding: 10px;
 }
 
-.room-card p {
-  text-align: left;
-  max-width: 1028px;
-  margin: 0 auto;
+.room-card-item a {
+  color: #F2EDEB;
+  text-decoration: none;
 }
