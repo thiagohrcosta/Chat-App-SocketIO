@@ -29,7 +29,7 @@
       <div class="room-card">
         {% for room in rooms %}
           <div class="room-card-item">
-            <p>{{ room.name }}</p>
+            <a href="{{ url_for('room', room_name=room.name) }}">{{ room.name }}</a>
           </div>
         {% endfor %}
       </div>
