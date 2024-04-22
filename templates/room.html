@@ -36,7 +36,7 @@
       socket.on('connect', function() {
         console.log('Connected to Socket.IO server');
       });
-
+  
       // Function to handle form submission
       function handleSubmit(e) {
         e.preventDefault();
@@ -66,7 +66,7 @@
     
         document.getElementById('input').value = '';
       }
-    
+  
       // Attach the handleSubmit function to the form submission event
       document.getElementById('form').onsubmit = handleSubmit;
     
@@ -79,9 +79,7 @@
     
         // Ensure the last message is always visible
       });
-      
     </script>
-    
 
   </body>
 </html>

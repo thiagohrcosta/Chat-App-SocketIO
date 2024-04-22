@@ -41,7 +41,7 @@ def room(room_name):
     'room.html', 
     room_name=room_name, 
     messages=messages,
-    host='http://127.0.0.1:5000'
+    host='http://127.0.0.1:5000/room/<room_name>'
   )
 
 
@@ -56,14 +56,21 @@ def create_message(room_name):
     )
     db.session.add(new_message)
     db.session.commit()
-    emit('message', data, room=room_name, namespace='/room')
-  return '', 204
+
+    socketio.emit('message', data, room=room_name)
+  
+  return data, 200
 
 # websockets
 @socketio.on('connect')
 def handle_connect():
   print('Client connected to the server')
 
+@socketio.on('message')
+def handle_message(data):
+  room_name = data['room']
+  message = data['message']
+  emit('message', message, room=room_name)
 
 @socketio.on('connect')
 def handle_disconnect():
