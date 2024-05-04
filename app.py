@@ -44,12 +44,15 @@ def room(room_name):
     host='http://127.0.0.1:5000/room/<room_name>'
   )
 
-
 @app.route("/message/<room_name>", methods=['POST'])
 def create_message(room_name):
   room = Room.query.filter_by(name=room_name).first()
   if room:
     data = request.form.get('input')
+
+    if data == "":
+      return jsonify({'message': 'Error'}), 400
+    
     new_message = Message(
         message=data,
         room_id=room.id
@@ -57,24 +60,37 @@ def create_message(room_name):
     db.session.add(new_message)
     db.session.commit()
 
-    socketio.emit('message', data, room=room_name)
+    socketio.emit('message', {'message': new_message.message, 'room': room_name}, room=room_name)
   
-  return data, 200
+  # return data, 200
+  return jsonify({'message': 'Message created successfully'}), 200
 
+@app.route("/delete_room/<int:room_id>", methods=['POST'])
+def delete_room(room_id):
+  room = Room.query.get(room_id)
+  if room:
+    Message.query.filter_by(room_id=room.id).delete()
+    db.session.delete(room)
+    db.session.commit()
+    return jsonify({'message': 'Room deleted successfully'}), 200
+  else:
+    return jsonify({'error': 'Room not found'}), 404
+  
 # websockets
 @socketio.on('connect')
 def handle_connect():
-  print('Client connected to the server')
+    print('Client connected to the server')
 
-@socketio.on('message')
-def handle_message(data):
-  room_name = data['room']
-  message = data['message']
-  emit('message', message, room=room_name)
-
-@socketio.on('connect')
+@socketio.on('disconnect')
 def handle_disconnect():
-    print('Client has disconnected to the server')
+    print('Client has disconnected from the server')
+
+@socketio.on('message')  # Fix the event name here
+def handle_message(data):
+    room_name = data['room']
+    join_room(room_name) 
+    new_message = Message.query.filter_by(room_id=data['room_id']).order_by(Message.id.desc()).first()
+    emit('message', {'message': new_message.message, 'room': room_name}, room=room_name)
 
 if __name__ == '__main__':
    socketio.run(app, debug=True)
