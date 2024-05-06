@@ -50,13 +50,26 @@ body {
 
 .room-card-item {
   margin: 20px 0;
-  background-color: #FC5130;
+  background-color: #440381;
   border-radius: 10px;
   height: 45px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+}
+
+.btn-delete {
+  margin: 0;
+  width: 50px;
+  background-color: #DE1A1A;
+  color: #F2EDEB;
+  font-weight: bold;
+}
+
+.btn-delete:hover {
+  background-color: #FC5130;
+
 }
 
 .room-card-item a {

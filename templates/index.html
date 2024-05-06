@@ -30,9 +30,43 @@
         {% for room in rooms %}
           <div class="room-card-item">
             <a href="{{ url_for('room', room_name=room.name) }}">{{ room.name }}</a>
+            <button class="btn-delete" data-room-id="{{ room.id }}">X</button>
           </div>
         {% endfor %}
       </div>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var deleteButtons = document.querySelectorAll('.btn-delete');
+        deleteButtons.forEach(function (button) {
+          button.addEventListener('click', function (event) {
+            var roomId = button.getAttribute('data-room-id');
+            deleteRoom(roomId);
+          });
+        });
+
+        function deleteRoom(roomId) {
+          fetch('/delete_room/' + roomId, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              console.log('Room deleted successfully');
+              window.location.reload();
+            } else {
+              console.error('Failed to delete room');
+            }
+          })
+          .catch(error => {
+            console.error('Error while deleting room:', error);
+          });
+        }
+      });
+  </script>
   </body>
 </html>
+
